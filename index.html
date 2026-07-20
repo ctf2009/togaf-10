@@ -3026,8 +3026,19 @@ const COURSE = {
   ]
 };
 
-/* ============ STATE (in-memory; swap for persistent storage when self-hosting) ============ */
-const progress = {}; // moduleId -> {score, max, passed}
+/* ============ STATE (persisted to localStorage so nobody loses their place) ============ */
+const STORE_KEY = "togaf10:v1";
+// Shape: { progress: { moduleId -> {score, max, passed} }, lastModule: id }
+function loadStore(){
+  try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch(e){ return {}; } // private-mode / disabled storage — degrade to in-memory
+}
+const _store = loadStore();
+const progress = (_store.progress && typeof _store.progress==="object") ? _store.progress : {}; // moduleId -> {score, max, passed}
+function saveStore(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify({ progress, lastModule:_store.lastModule })); }
+  catch(e){ /* storage unavailable/full — stay in-memory for this session */ }
+}
 
 /* ============ MARKDOWN + MERMAID ============ */
 mermaid.initialize({ startOnLoad:false, theme:"neutral", themeVariables:{ fontFamily:"Archivo, sans-serif", fontSize:"13px" } });
@@ -3130,6 +3141,7 @@ function refreshScorechip(){
 /* ============ MODULE VIEW ============ */
 function openModule(id){
   const m=COURSE.modules.find(x=>x.id===id); if(!m) return;
+  _store.lastModule=id; saveStore();
   const main=document.getElementById("main"); main.innerHTML="";
   refreshNav(id); refreshWheel(id);
   const eb=document.createElement("div"); eb.className="eyebrow"; eb.textContent="Module "+m.code; main.appendChild(eb);
@@ -3244,6 +3256,7 @@ function buildQuiz(m){
     result.className="result "+(pass?"pass":"fail");
     submit.style.display="none"; reset.style.display="inline-block";
     progress[m.id]={score,max,passed:pass};
+    saveStore();
     buildNav(); refreshNav(m.id); refreshWheel(m.id); refreshScorechip();
   });
   reset.addEventListener("click",()=>openModule(m.id));
@@ -3251,7 +3264,10 @@ function buildQuiz(m){
 }
 
 /* ============ BOOT ============ */
-buildWheel(); buildNav(); openModule("overview");
+buildWheel(); buildNav();
+const _start = (_store.lastModule && COURSE.modules.some(m=>m.id===_store.lastModule)) ? _store.lastModule : "overview";
+openModule(_start);
+refreshScorechip(); // reflect any restored quiz scores in the header chip
 </script>
 </body>
 </html>
