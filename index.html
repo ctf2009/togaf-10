@@ -1360,6 +1360,101 @@ Objective 2 is underrated: the IMP doesn't live alone — it must mesh with busi
 - **Business value assessment matrix** — value on one axis, risk on the other; each work package plotted; portfolio conversations follow.
 </script>
 
+<script type="text/markdown" id="md-09-plan">
+Phase E handed over an Architecture Roadmap and an **Implementation and Migration Plan at v0.1**. Phase F's job is to make it *real*: costed, resourced, prioritised, agreed with the people who own the money and the calendar, and meshed with the change machinery the enterprise already runs. These are TOGAF's seven steps, worked through on Meridian.
+
+```mermaid
+flowchart TD
+    IN[From Phase E: Roadmap + I&M Plan v0.1] --> S1[1 Confirm management framework interactions]
+    S1 --> S2[2 Assign business value per work package]
+    S2 --> S3[3 Estimate resources, timings, delivery vehicles]
+    S3 --> S4[4 Prioritise: cost/benefit + risk validation]
+    S4 --> S5[5 Confirm roadmap and update the ADD]
+    S5 --> S6[6 Generate the I&M Plan v1.0]
+    S6 --> S7[7 Close the cycle: lessons learned]
+```
+
+## The two matrices you inherit
+
+Both are created in **Phase E** and worked hard in **F** — a nuance worth knowing, because questions sometimes ask where they originate.
+
+**Consolidated Gaps, Solutions, and Dependencies Matrix** — the working table that ties each gap to its proposed solution and what it depends on:
+
+| # | Gap (source) | Proposed solution | Work package | Depends on |
+|---|---|---|---|---|
+| 1 | Digital origination capability (B) | Buy + configure origination suite | WP1 | WP3 |
+| 2 | Customer mastered in three places (C-Data) | Customer Data Platform | WP2 | WP4 |
+| 3 | 47 point-to-point integrations (C-App) | API + event layer | WP3 | WP4 |
+| 4 | Single-region deployment (D) | Dual-region active-active | WP4 | — |
+| 5 | Coastline customers on incompatible platform (C-Data) | Migration factory | WP5 | WP2 |
+
+**Implementation Factor Catalog** *(TOGAF also calls this the Implementation Factor Assessment and Deduction Matrix)* — everything that will shape the plan, and the deduction you draw from it:
+
+| Factor | Type | Description | Deduction |
+|---|---|---|---|
+| Q4 2027 Coastline deadline | Constraint | Contractual, non-negotiable | WP5 is date-pinned; WP2 must land by mid-2027 |
+| CPS 230 tolerances | Constraint | Apply in every transition state | Each cutover wave needs CRO sign-off |
+| SAFe delivery model | Dependency | All delivery runs on PI cadence | Work packages must map to ARTs and PIs |
+| Core platform skills gap | Risk | Ops team lacks target-platform skills | Fund capability uplift inside WP4 |
+| Spring lending peak | Constraint | Volume peaks Sep–Nov | No lending cutovers in that window |
+
+## 1 · Confirm management framework interactions
+
+The Implementation and Migration Plan **does not live alone** — this is the objective people forget, and answers that treat the IMP as self-contained score low. Confirm how it meshes with:
+
+| Framework | At Meridian | What it demands of the plan |
+|---|---|---|
+| Business planning | Annual investment cycle | Funding asks must hit the FY27 planning window |
+| Portfolio / programme mgmt | SAFe portfolio backlog | Work packages become epics with ART assignment |
+| Operations management | Ops change windows + incident process | Cutovers scheduled outside peak and freeze periods |
+
+## 2 · Assign business value to each work package
+
+**Per work package, with metrics** — not "the programme has a business case". That distinction is examined.
+
+| WP | Business value | Metric it moves |
+|---|---|---|
+| WP1 Digital Origination | Very high — revenue | Launch cycle < 8 weeks; withdrawal rate ≤ 15% |
+| WP2 Customer Data Platform | High — single view + CPS 230 | Mastered customer sources: 3 → 1 |
+| WP3 Integration Layer | High — launch agility | Point-to-point integrations: 47 → 0 |
+| WP4 Platform Foundation | Enabler — indirect | Tolerance evidencing automated |
+| WP5 Coastline Migration | Contractual | 180k customers migrated by Q4 2027 |
+| WP6 Core Strangulation | High — run cost + risk | Monolith run cost eliminated |
+
+Note WP4: an **enabler** with no direct business value of its own is still legitimate — but it must be justified by what it unblocks, not waved through as "foundational".
+
+## 3 · Estimate resources, timings, and delivery vehicles
+
+For each package: who builds it, through what vehicle, over what window. The *delivery vehicle* matters — a migration factory, an ART, and a vendor engagement have very different funding and governance shapes.
+
+## 4 · Prioritise — cost/benefit assessment and risk validation
+
+Plot each package on the **business value assessment matrix** (value against risk) and let the portfolio conversation follow:
+
+| | **Low risk** | **High risk** |
+|---|---|---|
+| **High value** | WP3 Integration Layer, WP1 Digital Origination → *do first, protect* | WP2 Customer Data Platform, WP5 Coastline Migration → *do, but de-risk hard* |
+| **Low value** | WP4 Platform Foundation *(enabler — value is what it unblocks)* | WP6 Core Strangulation → *stage it; long tail* |
+
+> **The trap worth internalising:** priority is **not** just a value ranking. WP5 sits in a nasty quadrant and would never win on value alone — but it's **date-pinned by a contractual constraint**. A good plan visibly distinguishes *value-prioritised* work from *constraint-pinned* work, because they fail in different ways and need different governance.
+
+Risk validation then revisits the transformation risks from Phase A with everything B–D and E have since taught you — residual risk is what governance actually accepts.
+
+## 5 · Confirm the Architecture Roadmap and update the ADD
+
+If finalising the plan forced an architecture change — a transition state moved, two work packages merged — the **Architecture Definition Document is updated to match**. The plan and the architecture stay one consistent story, not two separately versioned realities.
+
+## 6 · Generate the Implementation and Migration Plan v1.0
+
+The finalised plan: work packages with value, cost, resources and vehicles; the sequenced roadmap; transition architectures; dependencies; risks; and the governance under which Phase G will hold implementers to it.
+
+## 7 · Complete the cycle and document lessons learned
+
+**Phase F closes the architecture development cycle** — a recall favourite. G and H then operate on what F produced. Lessons learned feed the *capability*, improving the tailored method for the next cycle.
+
+> **E vs F, one line:** **E** decides *what* the increments are and *why*; **F** decides *what they cost, what they're worth, who delivers them and when* — and finalises. Grouping work or defining transition states → **E**. Cost, resource, value, prioritisation, or the finalised plan → **F**.
+</script>
+
 <script type="text/markdown" id="md-09-artifacts">
 ## 1 · Prioritised work packages (value / cost / risk excerpt)
 
@@ -2733,6 +2828,7 @@ const COURSE = {
     { id:"m09", code:"09", wheel:"F", title:"Phase F — Migration Planning", sub:"Value, cost, priority — and closing the development cycle",
       sections:[
         {title:"Theory", md:"md-09-theory"},
+        {title:"From roadmap to funded plan", md:"md-09-plan"},
         {title:"Simplify", md:"md-09-simplify"},
         {title:"Worked artifacts — Meridian Bank", md:"md-09-artifacts"},
         {title:"Exam traps", md:"md-09-traps"}
