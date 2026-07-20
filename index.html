@@ -241,6 +241,47 @@ flowchart LR
 | Value Stream Map | How value flows to stakeholders |
 
 Plus the two big **deliverables**: the Architecture Vision document and the Statement of Architecture Work. (A *deliverable* is a contractually specified work product; an *artifact* describes an aspect of the architecture; a *building block* is a reusable component of capability.)
+
+## The Architecture Definition Document (ADD)
+
+The ADD is the **master container** for the architecture description — the single deliverable that holds the core architectural artifacts across *all four domains* (Business, Data, Application, Technology) and *all states* (baseline, transition, target). If the Architecture Vision is the elevator pitch, the ADD is the full manuscript that the pitch is advertising.
+
+**Why it shows up in Phase A at only v0.1.** In Phase A you build the *shell*: scope, high-level structure, and the Vision's summary models dropped in — but almost nothing is filled in yet. The substantive content is authored later, each phase maturing its own slice: **B** develops the Business section, **C** the Data and Application sections, **D** the Technology section. Hence the two questions the exam loves to pair:
+
+- *Where is the ADD first created?* → **Phase A** (v0.1).
+- *Where does the real content get developed?* → **Phases B–D.**
+
+"Phase B" is the classic trap on the first question — because that's where real content *starts* — but **created ≠ populated**. It's created in A; it's populated in B onwards.
+
+### What's inside it (know the flavour, not the verbatim list)
+
+- Scope; goals, objectives, constraints
+- Architecture principles
+- Baseline architecture (per domain)
+- Target architecture models (per domain)
+- Rationale and justification for the architectural approach
+- Mapping to the Architecture Repository (landscape, reference models, re-use)
+- Gap analysis and impact assessment
+
+### Its inseparable companion — the Architecture Requirements Specification (ARS)
+
+The ADD and the ARS are a **matched pair**, developed in parallel and refined together right through the ADM. Same architecture, two complementary lenses:
+
+| | Architecture Definition Document | Architecture Requirements Specification |
+|---|---|---|
+| Lens | *Qualitative* — what the architecture **is** | *Quantitative* — what the architecture **must meet** |
+| Says | "Here's the design, and the architect's intent" | "Here are the measurable criteria it will be judged against" |
+| Holds | Models, baseline/target, gap analysis | Success measures, requirements, service contracts, standards, assumptions |
+
+Rule of thumb: if it's a *picture or a description of the solution*, it belongs in the **ADD**; if it's a *measurable requirement the solution has to satisfy*, it belongs in the **ARS**.
+
+### Don't confuse the ADD with…
+
+- **Architecture Vision** — the aspirational, executive-facing *summary* (also a Phase A deliverable, but a summary, not the detailed container).
+- **Architecture Roadmap** — the ordered list of work packages / transition increments (the *delta*), consolidated in Phase E and finalised in Phase F.
+- **Architecture Contract** — the governance agreement with implementers, a Phase G concern.
+
+> **The one-liner to memorise:** the ADD is a *deliverable* that *contains artifacts*; it's *created* in Phase A (v0.1), *developed* in B–D, and *paired* with the Architecture Requirements Specification.
 </script>
 
 <script type="text/markdown" id="md-a-artifacts">
@@ -320,7 +361,28 @@ Note what this is *not*: no technology choices, no vendor names, no integration 
 | Operational resilience evidencing | 2 — manual, partial | 4 — automated, CPS 230-aligned | Major |
 | Customer data mastering | 2 — fragmented | 3 — single mastered source | Moderate |
 | Architecture governance | 1 — informal | 3 — ARB + contracts | Major |
-</script>
+
+## 6 · Architecture Definition Document — v0.1 (the Phase A shell)
+
+At the end of Phase A, Meridian's ADD exists as a **skeleton**: the container and scope are set and the Vision's summary models are pasted in, but every domain section is still a stub marked "to be developed."
+
+```
+Meridian ADD — v0.1
+1. Scope ...................... Retail Banking; deposits, lending, payments; Coastline migration
+2. Goals, objectives, constraints  incl. Q4 2027 migration deadline (a constraint, not a requirement)
+3. Architecture principles ... Resilience by Design; Reuse before Buy before Build
+4. Baseline architecture ..................................... [stub — developed in B / C / D]
+5. Target architecture
+   5.1 Business .............................................. [stub — Phase B]
+   5.2 Data ................................................. [stub — Phase C]
+   5.3 Application ........................................... [stub — Phase C]
+   5.4 Technology ........................................... [stub — Phase D]
+6. Solution Concept diagram .................................. (carried over from the Vision)
+7. Gap analysis ............................................. [empty — needs a baseline + target first]
+8. Mapping to Architecture Repository ....................... [initial re-use assessment]
+```
+
+Notice sections 4, 5, and 7 are essentially empty. That emptiness is **correct** for v0.1 — with no developed baseline or target yet, there are no gaps to analyse. Filling those in during Phase A would be over-reach (and a Part 2 distractor). The companion **Architecture Requirements Specification** starts alongside it, seeded from requirements R-01–R-06 in the Vision.
 
 <script type="text/markdown" id="md-a-traps">
 ## Exam traps
