@@ -229,6 +229,22 @@ flowchart LR
 
 **Pattern worth noticing:** stakeholders come *early* (step 2). A huge number of Part 2 scenarios are won by choosing the answer that engages stakeholders and addresses their concerns before doing technical work.
 
+## Business scenarios — the Phase A technique
+
+If Phase A asks "what problem are we actually solving?", **business scenarios** is the technique TOGAF recommends for answering it. It's the named method for **discovering and documenting business requirements** — and it's the single most reliable 5-point answer in Part 2 whenever a scenario says requirements are unclear, disputed, or missing early in the cycle.
+
+Its real job is to prevent the most expensive mistake in architecture: **designing a solution to a problem nobody wrote down properly.**
+
+A complete business scenario captures seven things — *problem*, *business environment*, *technical environment*, *objectives* (SMART), *human actors*, *computer actors*, and the *roles, responsibilities and desired outcome*. It's built **iteratively** through **gathering → analysing → reviewing**, in workshops with the people who live the problem — not by architects writing fiction at their desks.
+
+Three things to hold onto for the exam:
+
+- It is a **technique**, not a deliverable, not a document, and not a phase. (A favourite distractor lists "Business Scenarios" as one of the six Fundamental Content documents — it isn't; it sits *within* ADM Techniques.)
+- It is recommended in **Phase A**, and the technique **carries into Phase B** for requirements discovery as business architecture develops.
+- Its output doesn't stay in Phase A — discovered requirements flow through **Requirements Management** into the **Architecture Requirements Specification**.
+
+> Full anatomy, SMART objectives, and the failure modes are in **Module 13 — Key techniques**. A complete worked scenario for Meridian is in the **Worked artifacts** tab of this module.
+
 ## Key artifacts of Phase A
 
 | Artifact | What it is |
@@ -383,6 +399,68 @@ Meridian ADD — v0.1
 ```
 
 Notice sections 4, 5, and 7 are essentially empty. That emptiness is **correct** for v0.1 — with no developed baseline or target yet, there are no gaps to analyse. Filling those in during Phase A would be over-reach (and a Part 2 distractor). The companion **Architecture Requirements Specification** starts alongside it, seeded from requirements R-01–R-06 in the Vision.
+
+## 7 · Business scenario — "Originate Home Loan" (worked)
+
+Run as a workshop series in Phase A with retail lending, credit risk, brokers, and IT operations in the room. Note what it does **not** contain: any solution. No products, no target design, no "we should build an API" — just a rigorously described problem.
+
+### 7.1 Problem
+
+Home-loan applicants wait **11 days** for a credit decision against a market norm of about **1 day**. Applications are re-keyed between the broker portal and the core banking monolith; income and identity documents arrive by email and are verified manually. Roughly a third of applicants who receive a competitor decision first withdraw before Meridian responds. The delay is a *symptom* — its causes are distributed across process, data, and systems, which is precisely why it needs a scenario rather than a guess.
+
+### 7.2 Environment
+
+| | Description |
+|---|---|
+| **Business** | Retail lending, via both broker-introduced and direct channels. Regulated responsible-lending obligations apply to every decision. Volume is seasonal, peaking at spring property listings. |
+| **Technical** | Broker portal and core banking monolith with no shared customer record; credit bureau accessed through a manual lookup; supporting documents held in email and a shared drive; assessment worklist managed in a spreadsheet. |
+
+### 7.3 Objectives (SMART)
+
+| Objective | S | M | A | R | T |
+|---|---|---|---|---|---|
+| Reduce time-to-decision for standard applications from 11 days to ≤ 2 days | Standard (non-complex) home-loan applications | Median time from submission to decision | Within lending's remit | Peers achieve ~1 day | By Q3 2028 |
+| Eliminate re-keying between channel and system of record | Broker + direct origination path | Count of manual re-entry steps → 0 | Process + integration change | Already mapped | By Q3 2028 |
+| Reduce pre-decision withdrawal rate from 34% to ≤ 15% | Applications withdrawn before decision | Withdrawal % from lending MI | Follows from speed | Benchmarked | By Q1 2029 |
+
+> "Improve the customer experience" would fail every column here. That's a mood, not an objective — and unmeasurable objectives are exactly what the technique exists to eliminate.
+
+### 7.4 Human actors
+
+| Actor | Place in the business model | Role in the scenario | What they need |
+|---|---|---|---|
+| Applicant | Customer | Supplies information, waits for a decision | Certainty, and one request for documents — not five |
+| Mortgage broker | Introducer channel | Submits and chases the application | Status visibility without phoning the contact centre |
+| Credit assessor | Retail lending operations | Assesses and decides | Verified income and identity data at first touch |
+| Lending team leader | Retail lending operations | Allocates the worklist, manages SLAs | A queue view that isn't a spreadsheet |
+| Credit risk officer | Risk function | Owns policy and responsible-lending compliance | Every decision evidenced and auditable |
+
+### 7.5 Computer actors
+
+| Actor | Place in the technology model | Role in the scenario |
+|---|---|---|
+| Broker portal | Channel | Captures application and documents |
+| Core banking monolith | System of record | Holds customer, account, and product data |
+| Credit bureau service | External service | Provides credit file (currently a manual lookup) |
+| Document store (email + shared drive) | Ungoverned workaround | Holds supporting evidence |
+| Assessment worklist (spreadsheet) | Ungoverned workaround | Tracks queue and allocation |
+
+### 7.6 Roles, responsibilities, and desired outcome
+
+Assessors decide; brokers submit and inform; risk sets policy and audits. The desired outcome is that a **standard application submitted through any channel reaches a decision within two days, with income and identity verified once, evidence captured automatically, and every decision traceable to the policy in force at the time.**
+
+### 7.7 Where the output goes
+
+The scenario is not the destination. Its findings become requirements, which flow through **Requirements Management** into the **Architecture Requirements Specification**, and its objectives become the KPIs in the Architecture Vision:
+
+| From the scenario | Becomes |
+|---|---|
+| Decision in ≤ 2 days | Feeds KPI "home-loan Decide stage ≤ 2 days"; refines requirement **R-01** |
+| Verify income and identity once | Contributes to **R-04** (single mastered customer source) |
+| No re-keying between channel and record | Contributes to **R-05** (integration only via the shared API and event layer) |
+| Every decision evidenced and auditable | Reinforces **R-02** (CPS 230 evidencing) |
+
+Notice the discipline: the scenario surfaced the *need*, and the requirements it produced are still **solution-free**. Choosing how to satisfy them — a decisioning engine, an event-driven document service, a product — is Phase C/D/E work.
 
 <script type="text/markdown" id="md-a-traps">
 ## Exam traps
@@ -1579,7 +1657,42 @@ The exam's angle is rarely the grid itself — it's that the 5-point answer in s
 
 ## Business scenarios
 
-The technique for discovering and documenting business requirements (Phases A and B). A complete scenario describes: the **problem**, the business and technical **environment**, the desired **objectives** (which should be SMART), the **human actors**, the **computer actors**, their **roles and responsibilities**, and the success measures. It's developed iteratively through **gathering, analysing, and reviewing** — workshops with the people who live the problem, not deskwork.
+The technique for discovering and documenting business requirements (Phases A and B). Its purpose is to make sure the architecture solves a **real, completely described** business problem — and to stop the classic failure of designing elegantly for a problem that was never written down.
+
+### The anatomy
+
+| Part | What it captures |
+|---|---|
+| **Problem** | The business problem, stated *without a solution inside it* |
+| **Environment — business** | Where it happens, who's affected, the operating and regulatory context |
+| **Environment — technical** | The systems, data, and constraints in play today |
+| **Objectives** | What "fixed" looks like — measurable, and **SMART** |
+| **Human actors** | The people involved, and their place in the *business* model |
+| **Computer actors** | The systems involved, and their place in the *technology* model |
+| **Roles, responsibilities, desired outcome** | Who does what, what each actor needs, and the success measures |
+
+Two of these are worth separating in your head, because the exam does: **human actors** map to the business model, **computer actors** map to the technology model. A question that asks which element a business scenario contains beyond problem/environment/objectives is fishing for **actors**.
+
+### SMART objectives
+
+**S**pecific, **M**easurable, **A**ctionable, **R**ealistic, **T**ime-bound. "Improve the customer experience" is a mood, not an objective. "Reduce median time-to-decision from 11 days to ≤ 2 days for standard applications by Q3 2028" is one — and it survives contact with a gap analysis three phases later, which is the whole point.
+
+### The iteration: gathering → analysing → reviewing
+
+The technique is **iterative and workshop-driven**. You gather with the people who live the problem, analyse what you heard, review it back with them, and go round again until the scenario is complete and they recognise their own problem in it. It is explicitly *not* deskwork, and not a one-pass interview.
+
+### What separates a good scenario from a bad one
+
+- **Representative and significant** — it stands for a real slice of business value, not an edge case someone shouted about loudest.
+- **Solution-free** — the moment a product, pattern, or technology appears in the problem statement, the scenario has stopped discovering and started assuming.
+- **Complete** — all seven parts. A scenario missing actors or measurable objectives can't generate verifiable requirements.
+- **Recognisable** — the people who live the problem agree that's the problem.
+
+### Where the output goes
+
+Requirements discovered here flow through **Requirements Management** into the **Architecture Requirements Specification**, and the objectives typically become KPIs in the Architecture Vision. That traceability — *scenario → requirement → architecture decision* — is exactly what a strong Practitioner answer demonstrates.
+
+> A complete worked business scenario for Meridian ("Originate Home Loan") is in **Module 04 → Worked artifacts**.
 
 ## Business Transformation Readiness Assessment
 
