@@ -757,6 +757,75 @@ The power move is the **cross-mapping**: capabilities × value stream stages sho
 Draw a matrix: baseline building blocks down the side **plus a "New" row**; target building blocks across the top **plus an "Eliminated" column**. Where baseline meets target: carried over (included). Baseline items with no target home land in **Eliminated** — each one must be a deliberate decision, or you've found an accidental omission. Target items with no baseline source land in **New** — these are the gaps, and gaps become roadmap components in Phase E.
 </script>
 
+<script type="text/markdown" id="md-05-steps">
+These nine steps are the engine room of the ADM. **Phases B, C, and D all run them** — only the domain changes. Learn them once here and you've learned three phases.
+
+## The nine steps, in detail
+
+| # | Step | What you actually do | Produces | The trap |
+|---|---|---|---|---|
+| 1 | Select reference models, viewpoints, tools | Pick the models to work from (industry reference models, prior internal assets) and the *viewpoints* that address your stakeholders' concerns. Decide the level of detail and the tooling. | Chosen viewpoints; tailored modelling approach | Selecting viewpoints *before* knowing stakeholders and concerns. The order is stakeholders → concerns → viewpoints → views. |
+| 2 | Develop the **Baseline** description | Describe the domain as it is *today*, to the depth needed for gap analysis and impact assessment — no further. Reuse whatever already exists in the Repository. | Baseline architecture description | Exhaustive documentation of a system you're replacing. Depth is a scoping decision, not a completeness contest. |
+| 3 | Develop the **Target** description | Describe how the domain must look to deliver the Vision's requirements and address stakeholder concerns. | Target architecture description | Jumping to products. Targets are expressed as **ABBs** — required capability, product-agnostic. |
+| 4 | Perform **gap analysis** | Set baseline against target and find what's missing, what carries over, and what retires. *(Full worked example below.)* | Validated gap list | Treating gaps as a to-do list. A gap is a *finding*, not yet a plan. |
+| 5 | Define **candidate roadmap components** | Turn each gap into a candidate piece of work — named, scoped, and traceable back to the gap and the requirement behind it. | Candidate Architecture Roadmap components | Calling them "the roadmap". They're **candidates** — Phase E consolidates them into the actual roadmap. |
+| 6 | Resolve impacts across the Architecture Landscape | Check what your work breaks or duplicates elsewhere: other segments, in-flight projects, shared services, standards in the SIB. | Impact assessment; landscape updates | Skipping it. Your segment's clean answer can be another segment's outage. |
+| 7 | Conduct formal stakeholder review | Take it back to the stakeholders from Phase A — do the models address their stated concerns? Check against the original business goals and the Statement of Architecture Work. | Reviewed, endorsed architecture | Reviewing with the *architecture* audience only. The concerns you're testing against belong to the business stakeholders. |
+| 8 | **Finalize** the architecture | Select standards, document the building blocks fully, and cross-check everything against the Architecture Repository. | Finalised domain architecture | — |
+| 9 | Create/update the **Architecture Definition Document** | Write your domain's section into the ADD (and requirements into the Architecture Requirements Specification). | ADD increment | Thinking you *create* the ADD here — it was created in Phase A at v0.1. Each of B/C/D **updates** the same document; it accretes. |
+
+### What changes between B, C, and D
+
+The steps and the two objectives are identical. Only these differ:
+
+| | Phase B | Phase C | Phase D |
+|---|---|---|---|
+| Domain | Business | Data **and** Application | Technology |
+| Notable | Prerequisite for the others — establishes business context | Two sub-architectures; either order, or in parallel | Expressed as technology *services*; physical products largely Phase E |
+
+> **Sequencing note.** Baseline-then-target is the documented order, but TOGAF's iteration guidance explicitly allows **target-first** when the future state is driving the work — you then derive only the baseline detail needed to compute gaps. Both are defensible in Part 2; what isn't defensible is *no baseline at all*, because then there are no gaps and no justified roadmap components.
+
+## Step 4 in full — a worked gap analysis
+
+Gap analysis is a **matrix**, and its mechanics are examinable. Build it like this:
+
+- **Baseline** building blocks down the side, plus a final **"New"** row
+- **Target** building blocks across the top, plus a final **"Eliminated"** column
+- Fill each intersection where a baseline block satisfies a target block
+
+Meridian's Business Architecture (Phase B), abridged:
+
+| Baseline ↓ / Target → | Unified Customer Mgmt | Digital Origination | Automated Credit Decisioning | Resilience Evidencing | **Eliminated** |
+|---|---|---|---|---|---|
+| Meridian customer mgmt (branch-centric) | Included — evolve | | | | |
+| Coastline customer mgmt | Included — absorb | | | | |
+| Paper-based origination | | | | | **Eliminated (deliberate)** |
+| Manual credit assessment | | | Included — partially retained for complex cases | | |
+| Manual resilience reporting | | | | | **Eliminated (deliberate)** |
+| **New** | | **GAP** | **GAP** | **GAP** | |
+
+### How to read it
+
+- **Read across a row** — "where does this baseline block end up?" A row with no entries anywhere except the Eliminated column is being retired. That must be a **conscious decision**; if nobody decided it, gap analysis has just caught an **accidental omission**, which is the column's entire purpose.
+- **Read down a column** — "where does this target block come from?" A column whose only mark is in the **New** row has no baseline source: that's a **gap**.
+- **Included** cells are the boring good news — capability that carries over, possibly evolved.
+
+### Turning gaps into candidate roadmap components (step 5)
+
+Each **GAP** now becomes a named candidate, traceable back to the requirement that justifies it:
+
+| Gap | Candidate roadmap component | Traces to |
+|---|---|---|
+| Digital origination capability | Digital Origination capability build | R-01 (launch < 8 weeks) |
+| Automated credit decisioning | Credit Decisioning uplift | R-01; Originate Home Loan "Decide" stage (11 days → ≤ 2) |
+| Resilience evidencing | Automated resilience evidencing | R-02 (CPS 230) |
+| *(from Phase C, same technique)* | Customer Data Platform | R-04 (single mastered source) |
+
+That traceability chain — **requirement → gap → candidate component → work package → transition architecture** — is the spine of the whole method, and demonstrating it is what separates a 5-point Part 2 answer from a 3.
+
+> These are still only *candidates*. What Phase E does with them is the next module's job — see **Module 08 → Building the roadmap, step by step**.
+</script>
+
 <script type="text/markdown" id="md-05-artifacts">
 ## 1 · Business Capability Map (Level 1, heat-mapped)
 
@@ -1093,6 +1162,111 @@ Phase E is the pivot from *architecture* to *delivery* — the first phase direc
 | **Architecture Roadmap** | The timeline view: work packages and transition architectures ordered to show progression from baseline to target |
 
 Phase E is also where **Solution Building Blocks enter the story** — work packages begin binding required capability (ABBs) to implementable solutions (SBBs).
+</script>
+
+<script type="text/markdown" id="md-08-build">
+Phases B, C, and D each handed over a pile of **candidate roadmap components**. This is how that pile becomes an actual roadmap. Follow the seven moves and the Meridian roadmap builds itself in front of you.
+
+```mermaid
+flowchart TD
+    IN[Candidate components from B, C, D] --> S1[1 Collect]
+    S1 --> S2[2 Consolidate and de-duplicate]
+    S2 --> S3[3 Group into work packages]
+    S3 --> S4[4 Make / buy / reuse per package]
+    S4 --> S5[5 Map dependencies]
+    S5 --> S6[6 Define transition architectures]
+    S6 --> S7[7 Sequence against constraints]
+    S7 --> OUT[Architecture Roadmap + I&M Plan v0.1]
+```
+
+## 1 · Collect the candidates
+
+Everything B, C, and D produced, still tagged with its source phase — because you'll need the traceability later, and because duplication *across* phases is the first thing you're hunting.
+
+| From | Candidate components |
+|---|---|
+| **B** (Business) | Digital Origination capability; Credit Decisioning uplift; automated resilience evidencing |
+| **C** (Data) | Customer Data Platform; Coastline customer migration; data quality/matching rules |
+| **C** (Application) | Integration layer replacing point-to-point; modular product engines; monolith strangulation |
+| **D** (Technology) | Container runtime platform; event streaming service; dual-region active-active posture |
+
+## 2 · Consolidate and de-duplicate
+
+The single highest-value move in Phase E, and the one exam scenarios reward. Three phases independently raised customer-data problems:
+
+- **B** — "Customer Management capability fragmented across Meridian and Coastline"
+- **C (Data)** — "Customer mastered in three places: core, CRM, Coastline core"
+- **C (App)** — "CRM holds C/U rights over Customer it shouldn't"
+
+Left alone, that's three competing projects with three budgets arguing over one database. Consolidated, it's **one work package**. This is also where you **reconcile interoperability requirements** — where building blocks must work together, their requirements have to agree before anyone builds anything.
+
+## 3 · Group into work packages
+
+A **work package** is a set of actions achieving one or more objectives — the unit that becomes a project or epic.
+
+| Work package | Absorbs candidates from | Delivers |
+|---|---|---|
+| **WP1 — Digital Origination** | B | Digital origination capability |
+| **WP2 — Customer Data Platform** | B, C-Data, C-App | Single mastered customer record |
+| **WP3 — Integration Layer** | C-App, D | API + event layer; retires point-to-point |
+| **WP4 — Platform Foundation** | D | Container runtime, dual-region posture |
+| **WP5 — Coastline Migration** | C-Data | 180k customers migrated |
+| **WP6 — Core Strangulation** | C-App, all | Monolith progressively retired |
+
+## 4 · Decide make / buy / reuse
+
+For each package, informed by the **Enterprise Continuum** — reuse before buy before build. This is where ABBs start binding to **SBBs**.
+
+| WP | Decision | Why |
+|---|---|---|
+| WP1 | **Buy + configure** | Origination is a mature commodity market; no differentiation in building it |
+| WP2 | **Build on platform services** | Meridian's matching rules and dual-brand model are genuinely specific |
+| WP3 | **Buy (API mgmt) + build (event backbone)** | Split decision — the gateway is commodity, the event model is not |
+| WP4 | **Buy — cloud services** | No competitive advantage in running your own runtime |
+| WP5 | **Build — migration factory** | Nobody sells "your acquisition's customers" migration |
+| WP6 | **Build, per product domain** | Strangulation is inherently bespoke to the monolith being strangled |
+
+## 5 · Map dependencies
+
+Sequencing is meaningless until you know what blocks what.
+
+| WP | Depends on | Because |
+|---|---|---|
+| WP1 Digital Origination | WP3 | Needs the API layer to reach product data |
+| WP2 Customer Data Platform | WP4 | Needs the runtime + data platform services |
+| WP3 Integration Layer | WP4 | Runs on the platform |
+| WP5 Coastline Migration | WP2 | Needs somewhere authoritative to migrate *into* |
+| WP6 Core Strangulation | WP1, WP2, WP3 | Can't retire the monolith until its functions live elsewhere |
+
+Read the chain and the foundation announces itself: **WP4 → WP3 → WP2 → WP5**, with WP6 last by definition.
+
+## 6 · Define transition architectures
+
+Now ask: can this land in one step? At Meridian, obviously not — so identify intermediate states. The **test each state must pass** is *continuous business value*: a state the business can live in and benefit from, not a technical staging post.
+
+| State | Reached when | Business value (why it can be lived in) |
+|---|---|---|
+| **T1 — Coexistence** | WP4 + WP3 done | New products launch against the facade without touching the monolith; integration risk collapses |
+| **T2 — Customer unified** | WP2 + WP5 + first product engine | Single customer view; Coastline deadline met; CPS 230 evidencing for deposits |
+| **Target** | WP1 + WP6 done | Full launch agility; monolith cost and risk eliminated |
+
+> "60% of code migrated" would **fail** this test — it's a progress metric, not a state anyone benefits from. Options describing purely technical milestones are reliable low scorers.
+
+## 7 · Sequence against constraints
+
+Finally, lay the packages on a timeline that respects the dependencies *and* the constraints captured back in Phase A — for Meridian, the contractual **Q4 2027** Coastline deadline.
+
+That single constraint does real work here: WP5 can't start until WP2 delivers, so WP2 must land by mid-2027, which forces WP4 to start in 2026. **The deadline reaches three packages back and sets the programme start date.** That is the constraint → scope → roadmap traceability Part 2 scenarios are built to reward.
+
+The resulting roadmap and transition states are drawn out in the **Worked artifacts** tab.
+
+## What comes out
+
+- **Architecture Roadmap** — the initial complete version
+- **Implementation and Migration Plan v0.1** — finalised later, in Phase F
+- Updated ADD and requirements, where sequencing forced architecture changes
+
+> **Phase E vs Phase F.** E decides *what* the increments are and *why*; F turns them into a costed, resourced, governed plan and finalises the roadmap. If a question is about grouping work or defining transition states, it's E. If it's about cost, resource, or the finalised plan, it's F.
 </script>
 
 <script type="text/markdown" id="md-08-artifacts">
@@ -2234,6 +2408,7 @@ const COURSE = {
     { id:"m05", code:"05", wheel:"B", title:"Phase B — Business Architecture", sub:"Capabilities, value streams, organisation maps — and the gap analysis that drives everything downstream",
       sections:[
         {title:"Theory", md:"md-05-theory"},
+        {title:"The shared steps in detail", md:"md-05-steps"},
         {title:"Simplify", md:"md-05-simplify"},
         {title:"Worked artifacts — Meridian Bank", md:"md-05-artifacts"},
         {title:"Exam traps", md:"md-05-traps"}
@@ -2479,6 +2654,7 @@ const COURSE = {
     { id:"m08", code:"08", wheel:"E", title:"Phase E — Opportunities & Solutions", sub:"Where architecture pivots to delivery: work packages, transition states, and the initial roadmap",
       sections:[
         {title:"Theory", md:"md-08-theory"},
+        {title:"Building the roadmap, step by step", md:"md-08-build"},
         {title:"Simplify", md:"md-08-simplify"},
         {title:"Worked artifacts — Meridian Bank", md:"md-08-artifacts"},
         {title:"Exam traps", md:"md-08-traps"}
